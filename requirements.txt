@@ -1,2 +1,3 @@
 pandas==2.2.3
 PuLP==2.9.0
+ttkthemes
