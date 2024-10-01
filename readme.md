@@ -22,10 +22,10 @@ Este projeto é uma aplicação que utiliza otimização linear para minimizar o
 
 ## Como executar
 
-1. Execute o módulo implementacao_modelagem.py diretamente via terminal:
+1. Execute o módulo gui.py diretamente via terminal:
 
    ```bash
-   python implementacao_modelagem.py
+   python gui.py
 
 2. Anexe os quatro arquivos CSV necessários:
    - Pedidos (exemplo: Mapa030723.csv)
@@ -33,4 +33,4 @@ Este projeto é uma aplicação que utiliza otimização linear para minimizar o
    - Valores Terceirizada (exemplo: valores_terceirizada.csv)
    - Valores Terceirizada (exemplo: valores_terceirizada.csv)
 
-3. Após anexar os arquivos, clique no botão "Solve" para rodar o solucionador. Os resultados serão exibidos na seção de saída do console da interface e salvos no arquivo PedidosAtualizados.xlsx.
+3. Após anexar os arquivos, clique no botão "Resolver" para rodar o solucionador. Os resultados serão exibidos na seção de saída do console da interface e salvos no arquivo PedidosAtualizados.xlsx.
