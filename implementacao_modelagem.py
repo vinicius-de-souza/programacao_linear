@@ -62,6 +62,9 @@ def run_solver(pedidos_path, valores_internos_path, valores_terceirizada_path, c
     # Resolver o modelo
     model.solve()
 
+    # Imprimir o valor da função objetivo
+    output_func(f"Custo total de frete: R${model.objective.value():.2f} \n")
+
     # Verificar se a capacidade dos caminhões foi respeitada após a solução
     for i in range(len(caminhoes)):
         carga_total = sum(z_vars[i, j].varValue * pedidos[j][2] for j in range(len(pedidos)))
