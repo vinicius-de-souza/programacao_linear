@@ -62,19 +62,37 @@ def run_solver(pedidos_path, valores_internos_path, valores_terceirizada_path, c
     # Resolver o modelo
     model.solve()
 
-    # Check and return results
-    if LpStatus[model.status] == 'Optimal':
-        # Atualizar os resultados de z_vars (caminhão e pedido) e y_vars (modalidade de frete)
+    # Verificar se a capacidade dos caminhões foi respeitada após a solução
+    for i in range(len(caminhoes)):
+        carga_total = sum(z_vars[i, j].varValue * pedidos[j][2] for j in range(len(pedidos)))
+        print(f'Caminhão {caminhoes[i][0]} (Capacidade: {caminhoes[i][1]} kg) - Carga total alocada: {carga_total} kg')
+        
+        # Debugging: Verificar cada pedido
         for j in range(len(pedidos)):
-            pedido_id = pedidos[j][0]
-            if y_vars[j].varValue == 0:
-                pedidos_df.loc[pedidos_df['Numero do Pedido'] == pedido_id, 'Modalidade do Frete'] = 'Interno'
-                for i in range(len(caminhoes)):
-                    if z_vars[i, j].varValue == 1:
-                        pedidos_df.loc[pedidos_df['Numero do Pedido'] == pedido_id, 'Caminhão'] = caminhoes[i][0]
-                        break
+            print(f'  Pedido {pedidos[j][0]}: {z_vars[i, j].varValue} (Peso: {pedidos[j][2]} kg)')
+        
+        if carga_total > caminhoes[i][1]:
+            print(f"Atenção: A capacidade do caminhão {caminhoes[i][0]} foi excedida!")
 
-        pedidos_df.to_excel("PedidosAtualizados.xlsx", index=False)
-        return "Resultados extraídos e salvos com sucesso em 'PedidosAtualizados.xlsx'."
+    # Adicionar as novas colunas ao DataFrame de pedidos
+    pedidos_df['Modalidade Frete'] = ''
+    pedidos_df['Caminhao'] = ''
+
+    # Checar se a solução é ótima
+    if LpStatus[model.status] == 'Optimal':
+        # Atualizar as colunas com base nos resultados do modelo
+        for j in range(len(pedidos)):
+            for i in range(len(caminhoes)):
+                if z_vars[i, j].varValue > 0:
+                    pedidos_df.loc[j, 'Modalidade Frete'] = 'Interno'
+                    pedidos_df.loc[j, 'Caminhao'] = caminhoes[i][0]
+                    break
+            if y_vars[j].varValue > 0:
+                pedidos_df.loc[j, 'Modalidade Frete'] = 'Externo'
+                pedidos_df.loc[j, 'Caminhao'] = ''
+
+        # Salvar o DataFrame atualizado em um novo arquivo CSV
+        pedidos_df.to_csv('Mapa030723_atualizado.csv', sep=';', decimal=',', index=False)
+        return "Resultados extraídos e salvos com sucesso em 'Mapa030723_atualizado.csv'."
     else:
         return "Não foi encontrada uma solução ótima para o problema."
