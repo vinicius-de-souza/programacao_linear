@@ -1,0 +1,7 @@
+implementacao\_modelagem module
+===============================
+
+.. automodule:: implementacao_modelagem
+   :members:
+   :undoc-members:
+   :show-inheritance:
