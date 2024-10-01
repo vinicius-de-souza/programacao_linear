@@ -1,7 +1,7 @@
 from pulp import LpMinimize, LpProblem, LpVariable, lpSum, LpStatus
 import pandas as pd
 
-def run_solver(pedidos_path, valores_internos_path, valores_terceirizada_path, caminhoes_path):
+def run_solver(pedidos_path, valores_internos_path, valores_terceirizada_path, caminhoes_path, output_func=print):
     # Carregando os dados do problema
     pedidos_df = pd.read_csv(pedidos_path, sep=';', decimal=',')
     valores_internos_df = pd.read_csv(valores_internos_path, sep=';', decimal=',')
@@ -65,6 +65,7 @@ def run_solver(pedidos_path, valores_internos_path, valores_terceirizada_path, c
     # Verificar se a capacidade dos caminhões foi respeitada após a solução
     for i in range(len(caminhoes)):
         carga_total = sum(z_vars[i, j].varValue * pedidos[j][2] for j in range(len(pedidos)))
+        output_func(f'Caminhão {caminhoes[i][0]} (Capacidade: {caminhoes[i][1]} kg) - Carga total alocada: {carga_total:.2f} kg \n')
         print(f'Caminhão {caminhoes[i][0]} (Capacidade: {caminhoes[i][1]} kg) - Carga total alocada: {carga_total} kg')
         
         # Debugging: Verificar cada pedido

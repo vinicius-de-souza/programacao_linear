@@ -4,6 +4,7 @@ from tkinter import ttk  # Import ttk for styling
 from ttkthemes import ThemedTk  # Import ThemedTk for additional themes
 import implementacao_modelagem  # Assuming both files are in the same directory
 import threading
+import winsound
 
 class FreightOptimizerGUI:
     def __init__(self, root):
@@ -11,7 +12,7 @@ class FreightOptimizerGUI:
         self.root.title("Otimização de Frete")
         
         # Set initial window size
-        self.root.geometry('610x500')
+        self.root.geometry('700x500')
         
         # Center the window
         self.center_window()
@@ -124,10 +125,11 @@ class FreightOptimizerGUI:
                     self.file_paths['pedidos'],
                     self.file_paths['valores_internos'],
                     self.file_paths['valores_terceirizada'],
-                    self.file_paths['caminhoes']
+                    self.file_paths['caminhoes'],
+                    output_func=self.console_insert
                 )
                 self.console.insert(tk.END, f"{result}\n\n")
-                self.update_status("Sucesso", "green", border_color="green")
+                self.update_status("Sucesso", "green", border_color="green")               
             except Exception as e:
                 self.console.insert(tk.END, f"Erro: {str(e)}\n\n")
                 self.update_status("Erro", "red")
@@ -137,11 +139,16 @@ class FreightOptimizerGUI:
                 self.clear_button.config(state=tk.NORMAL)
                 if len(self.file_paths) == 4:
                     self.solve_button.config(state=tk.NORMAL)
+                winsound.MessageBeep(winsound.MB_ICONEXCLAMATION)
 
             self.console.yview(tk.END)
 
         # Run the solver in a separate thread to keep the GUI responsive
         threading.Thread(target=run_solver).start()
+
+    def console_insert(self, text):
+        self.console.insert(tk.END, text + "\n")
+        self.console.yview(tk.END)
 
     def clear_results(self):
         self.console.delete(1.0, tk.END)
