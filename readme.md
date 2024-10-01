@@ -22,7 +22,7 @@ Este projeto é uma aplicação que utiliza otimização linear para minimizar o
 
 ## Como executar
 
-1. Execute o módulo implementacao_modelagem.py diretamente via terminal:
+1. Execute o módulo gui.py diretamente via terminal:
 
    ```bash
    python gui.py
