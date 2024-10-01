@@ -1,4 +1,4 @@
-# Freight Optimizer
+# Otimizador de Fretes
 
 Este projeto é uma aplicação que utiliza otimização linear para minimizar os custos de frete, com base em dados de pedidos, custos internos, custos terceirizados e capacidades de caminhões. Ele permite que o usuário selecione arquivos de entrada em formato CSV e gera uma solução ótima para a distribuição de pedidos.
 
