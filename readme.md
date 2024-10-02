@@ -11,6 +11,7 @@ Este projeto é uma aplicação que utiliza otimização linear para minimizar o
 ## Pré-requisitos
 
 - Python 3.7 ou superior
+- [GLPK](https://www.gnu.org/software/glpk/)
 
 ## Instalação
 
